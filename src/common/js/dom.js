@@ -27,7 +27,7 @@ export function getData(el, name, val) {
     }
 }
 
-// 给JS中兼容性写法加前缀  
+// 给JS中兼容性写法加前缀   
 let elementStyle = document.createElement('div').style
 
 let vendor = (() => {
