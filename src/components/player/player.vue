@@ -141,9 +141,6 @@ export default {
       'fullScreen',
       'playing',//播放状态
       'currentIndex'
-    ]),
-    ...mapActions([
-      'savePlayHistory'
     ])
   },
   created() {
@@ -255,6 +252,7 @@ export default {
     },
     ready() {
       this.songReady = true
+      this.savePlayHistory(this.currentSong)//向播放历史中写入当前歌曲，下面有它的mapAction
     },
     error() {
       this.songReady = true 
@@ -421,8 +419,11 @@ export default {
       this.$refs.playlist.show()
     },
     ...mapMutations({
-      setFullScreen: 'SET_FULL_SCREEN',
-    })
+      setFullScreen: 'SET_FULL_SCREEN'
+    }),
+    ...mapActions([
+      'savePlayHistory'
+    ])
   },
   watch: {
     // 当当前歌曲变化时则触发播放器播放歌曲

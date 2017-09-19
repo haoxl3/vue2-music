@@ -93,7 +93,7 @@ export default {
           const index = this.sequenceList.findIndex((song) => {
               return current.id === song.id
           })
-          this.$refs.listContent.scrollToElement(this.$refs.listItem[index], 300)
+          this.$refs.listContent.scrollToElement(this.$refs.list.$el.children[index], 300)
       },
       //删除歌曲
       deleteOne(item) {
