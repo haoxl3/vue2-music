@@ -8,11 +8,7 @@ import {shuffle} from 'common/js/util'
 export const playlistMixin = {
     computed: {
         ...mapGetters([
-            'playlist',
-            'sequenceList',
-            'currentSong',
-            'playlist',
-            'mode'
+            'playlist'
         ]),
     },
     mounted() {
@@ -44,7 +40,7 @@ export const playerMixin = {
             'playlist',
             'currentSong',
             'mode',
-            'favoriteList'
+            'favoriteList'//下面要判断歌曲是否在喜欢列表中，所以要取此数据
         ])
     },
     methods: {
@@ -71,12 +67,38 @@ export const playerMixin = {
             })
             this.setCurrentIndex(index)
         },
+        getFavoriteIcon(song) {
+            if (this.isFavorite(song)) {
+                return 'icon-favorite'
+            } 
+            return 'icon-not-favorite'
+        },
+        toggleFavorite(song) {//在playlist中调用此方法
+            //如果歌曲在收藏里，则删除它；没在的话则添加到收藏里
+            if(this.isFavorite(song)) {
+                this.deleteFavoriteList(song)
+            }else{
+                //为mapActions中的方法
+                this.saveFavoriteList(song)
+            }
+        },
+        // 判断歌曲是否在收藏里
+        isFavorite(song) {
+            const index = this.favoriteList.findIndex((item) => {
+                return item.id === song.id
+            })
+            return index > -1
+        },
         ...mapMutations({
             setPlayingState: 'SET_PLAYING_STATE',
             setCurrentIndex: 'SET_CURRENT_INDEX',
             setPlayMode: 'SET_PLAY_MODE',
             setPlaylist: 'SET_PLAYLIST'
-        })
+        }),
+        ...mapActions([
+            'saveFavoriteList',//为actions.js中的方法
+            'deleteFavoriteList'
+        ])
     }
 }
 
@@ -112,7 +134,9 @@ export const searchMixin = {
     },
     ...mapActions([
       'saveSearchHistory',
-      'deleteSearchHistory'
+      'deleteSearchHistory',
+      'saveFavoriteList',
+      'deleteFavoriteList'
     ])
   }
 }
