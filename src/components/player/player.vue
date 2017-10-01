@@ -271,6 +271,7 @@ export default {
     //获取歌词
     getLyric() {
       this.currentSong.getLyric().then((lyric) =>{
+        //因为切换歌曲是同步，而获取歌词是异步，所以要判断一下获得的歌词是否与当前要播放的一样
         if (this.currentSong.lyric !== lyric) {
             return
         }
@@ -443,10 +444,10 @@ export default {
       }
       // 当它从手机后台切到前台时保障歌词可重新播放
       clearTimeout(this.timer)
-        this.timer = setTimeout(() => {
-          this.$refs.audio.play()
-          //获取歌词API
-          this.getLyric()
+      this.timer = setTimeout(() => {
+        this.$refs.audio.play()
+        //获取歌词API
+        this.getLyric()
       }, 1000)
     },
     // 监听播放状态来控制是否播放或暂停
